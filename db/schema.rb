@@ -16,8 +16,8 @@ ActiveRecord::Schema.define(version: 2018_05_31_024048) do
   enable_extension "plpgsql"
 
   create_table "bookings", force: :cascade do |t|
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.datetime "start_time", null: false
+    t.datetime "end_time", null: false
     t.bigint "user_id"
     t.bigint "device_id"
     t.datetime "created_at", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2018_05_31_024048) do
   end
 
   create_table "devices", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.bigint "lab_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -35,14 +35,14 @@ ActiveRecord::Schema.define(version: 2018_05_31_024048) do
   end
 
   create_table "labs", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.integer "invited_by"
+    t.string "name", null: false
+    t.integer "invited_by_user_id", null: false
     t.bigint "lab_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

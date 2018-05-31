@@ -3,8 +3,8 @@
 # Table name: bookings
 #
 #  id         :bigint(8)        not null, primary key
-#  end_time   :datetime
-#  start_time :datetime
+#  end_time   :datetime         not null
+#  start_time :datetime         not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  device_id  :bigint(8)
@@ -24,4 +24,6 @@
 class Booking < ApplicationRecord
   belongs_to :user
   belongs_to :device
+
+  validates :start_time, :end_time, presence: true
 end
