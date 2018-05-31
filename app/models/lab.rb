@@ -12,4 +12,5 @@ class Lab < ApplicationRecord
   has_many :users
   has_many :devices
   has_many :bookings, through: :devices
+
 end

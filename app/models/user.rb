@@ -4,6 +4,7 @@
 #
 #  id                 :bigint(8)        not null, primary key
 #  name               :string           not null
+#  role               :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  invited_by_user_id :integer          not null
@@ -21,6 +22,7 @@
 class User < ApplicationRecord
   belongs_to :lab
 
+  has_many :invite_codes
   has_many :bookings
   has_many :devices, through: :bookings
 end
