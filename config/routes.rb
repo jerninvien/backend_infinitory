@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   get '/welcome', to: 'welcome#index'
 
-  namespace :api, path: '', defaults: { format: :json }, constraints: { subdomain: 'api' } do
+  # namespace :api, path: '', defaults: { format: :json }, constraints: { subdomain: 'api' } do
+  namespace :api, defaults: { format: :json } do
     namespace :v1 do
       get '/welcome_api_v1', to: 'welcome#index'
 
@@ -11,15 +12,15 @@ Rails.application.routes.draw do
        # at any given time.
        # Expired invites are flushed every 24 hrs.
        # Should not be an issue, but can be improved later
-      resources :invite_codes
+      resources :invite_codes, only: [:index, :create]
 
       shallow do
         resources :labs do
-          resources :devices do
+          resources :devices, except: [:destroy] do
             resources :bookings
           end
 
-          resources :users
+          resources :users, except: [:destroy]
         end
       end
     end

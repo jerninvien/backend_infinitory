@@ -9,8 +9,10 @@
 #
 
 class Lab < ApplicationRecord
-  has_many :users
-  has_many :devices
-  has_many :bookings, through: :devices
+  has_many :bookings, through: :devices, dependent: :destroy
+  has_many :devices, dependent: :destroy
+  has_many :invite_codes, dependent: :destroy
+  has_many :users, dependent: :destroy
+
 
 end

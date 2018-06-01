@@ -3,6 +3,7 @@
 # Table name: devices
 #
 #  id         :bigint(8)        not null, primary key
+#  disabled   :boolean          default(FALSE), not null
 #  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
