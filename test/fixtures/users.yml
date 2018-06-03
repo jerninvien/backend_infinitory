@@ -8,7 +8,7 @@
 #  role               :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  invited_by_user_id :integer          not null
+#  invited_by_user_id :integer
 #  lab_id             :bigint(8)
 #
 # Indexes

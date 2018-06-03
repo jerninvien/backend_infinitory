@@ -8,11 +8,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       get '/welcome_api_v1', to: 'welcome#index'
 
-       # Using 4 digit invite_codes => 9000 pending invites possible
-       # at any given time.
+       # Using 4 digit invite_codes => 9000 pending invites possible at any given time.
        # Expired invites are flushed every 24 hrs.
        # Should not be an issue, but can be improved later
-      resources :invite_codes, only: [:index, :create]
+      resources :invite_codes, only: %i[index, create]
 
       shallow do
         resources :labs do

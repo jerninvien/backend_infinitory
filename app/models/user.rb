@@ -8,7 +8,7 @@
 #  role               :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  invited_by_user_id :integer          not null
+#  invited_by_user_id :integer
 #  lab_id             :bigint(8)
 #
 # Indexes
@@ -26,4 +26,11 @@ class User < ApplicationRecord
   has_many :invite_codes
   has_many :bookings
   has_many :devices, through: :bookings
+
+  validates :name,
+    presence: true,
+    length: {
+      in: 2..40,
+      message: 'Your name should be between 2 and 40 characters long'
+    }
 end
