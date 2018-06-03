@@ -26,7 +26,7 @@ class Lab < ApplicationRecord
 
 
   before_create :set_lab_name
-  
+
   after_create :generate_lab_invite_codes
 
 
@@ -40,7 +40,7 @@ class Lab < ApplicationRecord
 
   def generate_lab_invite_codes
     puts 'generate_lab_invite_codes'
-    4.times do
+    5.times do
       InviteCode.create!(
         lab: self,
         user: self.users.first,

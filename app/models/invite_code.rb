@@ -38,7 +38,7 @@ class InviteCode < ApplicationRecord
 
   def limit_lab_pin_codes
     puts 'limit_lab_pin_codes'
-    if self.lab.invite_codes(:reload).count >= 3
+    if self.lab.invite_codes(:reload).count >= 5
       errors.add(:base, 'Please use existing Pin Codes first')
     end
   end
