@@ -22,8 +22,8 @@
 #
 
 class InviteCode < ApplicationRecord
-  belongs_to :lab
-  belongs_to :user
+  belongs_to :lab, inverse_of: :invite_code
+  belongs_to :user, inverse_of: :invite_code
 
   validates :lab, :user, presence: true
   validates :code,
