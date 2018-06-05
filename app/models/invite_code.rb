@@ -22,27 +22,24 @@
 #
 
 class InviteCode < ApplicationRecord
-  belongs_to :lab, inverse_of: :invite_code
-  belongs_to :user, inverse_of: :invite_code
+  belongs_to :lab, inverse_of: :invite_codes
+  belongs_to :user, inverse_of: :invite_codes
 
   validates :lab, :user, presence: true
-  validates :code,
-    uniqueness: true,
-    length: { maximum: 4 }
+  validates :code, uniqueness: true, length: { maximum: 4 }
 
-  before_create :generate_invite_code
-
-  validates :limit_lab_pin_codes, on: :create
+  validate :limit_lab_pin_codes, on: :create
 
   protected
 
   def limit_lab_pin_codes
     puts 'limit_lab_pin_codes'
-    if self.lab.invite_codes(:reload).count >= 5
-      errors.add(:base, 'Please use existing Pin Codes first')
+    if self.lab.invite_codes.count > 5
+      self.errors.add(:base, "Please use your lab's existing Pin Codes first")
     end
   end
 
+  before_create :generate_invite_code
   def generate_invite_code
     puts 'generate_invite_code'
     self.code = loop do

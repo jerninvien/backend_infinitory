@@ -10,32 +10,26 @@
 #
 
 class Lab < ApplicationRecord
+  has_many :users, index_errors: true, inverse_of: :lab, dependent: :destroy
   accepts_nested_attributes_for :users
-  has_many :users,
-    inverse_of: :lab,
-    dependent: :destroy
 
-  has_many :invite_codes,
-    inverse_of: :lab,
-    dependent: :destroy
-
+  has_many :invite_codes, index_errors: true, inverse_of: :lab, dependent: :destroy
   has_many :devices, dependent: :destroy
+  has_many :bookings, through: :devices, dependent: :destroy
 
-  has_many :bookings,
-    through: :devices,
-    dependent: :destroy
 
   validates :name,
     presence: true,
     length: {
-      in: 2..60,
-      message: 'Lab names should be between 2 and 60 characters long'
+      in: 4..40,
+      message: 'Lab names should be between 2 and 40 characters long'
     }
 
   validates :institute,
+    allow_blank: true,
     length: {
       in: 4..80,
-      message: 'Institute name should be between 4 and 40 characters long'
+      message: 'Institute name should be between 2 and 40 characters long'
     }
 
   protected

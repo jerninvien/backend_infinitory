@@ -21,7 +21,7 @@
 #
 
 class User < ApplicationRecord
-  belongs_to :lab, inverse_of: :user
+  belongs_to :lab, inverse_of: :users
   has_many :invite_codes, inverse_of: :user
   has_many :bookings
   has_many :devices, through: :bookings

@@ -5,19 +5,18 @@ class API::V1::LabsController < ApplicationController
   end
 
   def create
-    lab = Lab.build(name: params[:name])
-    first_user = lab.users.build(name: params[:name])
+    puts "params are #{params}"
+
+    lab = Lab.new({name: params[:name]})
+    first_user = lab.users.build({
+      name: params[:name],
+      admin: true
+      })
 
     if lab.save
-      puts "it saved!"
-      puts lab
-      puts first_user
-      render json: lab
+      render json: { lab: lab, user: first_user, status: 200 }
     else
-      puts "it did not save "
-      puts lab
-      puts first_user
-      puts
+      render json: { errors: lab.errors, status: 500 }
     end
   end
 
