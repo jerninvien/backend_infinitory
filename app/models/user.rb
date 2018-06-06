@@ -32,7 +32,7 @@ class User < ApplicationRecord
     presence: true,
     length: {
       in: 2..40,
-      message: 'Your name should be between 2 and 40 characters long'
+      message: "Your name should be between 2 and 40 characters long"
     }
 
   def invited_by
@@ -49,7 +49,7 @@ class User < ApplicationRecord
       )
     else
       puts "Please use your lab's existing pin codes"
-      self.errors.add(:error, "Please use one of your lab's existing pin codes")
+      self.errors.add(:error, "Use your lab's existing pin codes")
       return false
     end
   end

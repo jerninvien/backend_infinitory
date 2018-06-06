@@ -31,12 +31,12 @@ class InviteCode < ApplicationRecord
 
   protected
 
-  before_create :gen_unique_code
-  def gen_unique_code
+  before_create do |invite_code|
     puts 'gen_unique_code'
     self.code = loop do
-      invite_code = rand(10 ** 4)
-      break invite_code unless InviteCode.exists?(code: invite_code)
+      code = rand(10 ** 4)
+      break code unless InviteCode.exists?(code: code)
     end
   end
+
 end

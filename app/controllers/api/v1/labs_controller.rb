@@ -1,5 +1,5 @@
 class API::V1::LabsController < ApplicationController
-  before_action :set_lab, only: [:show, :update, :destroy]
+  before_action :set_lab, only: [:index, :show, :update, :destroy]
   skip_before_action :authenticate_user, only: :create
 
   def index
@@ -47,7 +47,7 @@ class API::V1::LabsController < ApplicationController
 
   private
 
-  def get_lab
+  def set_lab
     lab = Lab.find(params[:id])
   end
 
