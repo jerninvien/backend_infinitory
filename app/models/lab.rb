@@ -40,11 +40,11 @@ class Lab < ApplicationRecord
     self.name = self.name + " Group"
   end
 
-  after_create :generate_lab_invite_codes
-  def generate_lab_invite_codes
-    puts 'generate_lab_invite_codes'
+  after_create :generate_first_pin_codes
+  def generate_first_pin_codes
+    puts 'generate_initial_invite_codes'
     5.times do
-      InviteCode.create(
+      InviteCode.create!(
         lab: self,
         user: self.users.first,
       )

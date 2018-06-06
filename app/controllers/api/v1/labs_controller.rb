@@ -1,5 +1,6 @@
 class API::V1::LabsController < ApplicationController
   before_action :set_lab, only: [:show, :update, :destroy]
+  skip_before_action :authenticate_user, only: :create
 
   def index
     labs = Lab.all
@@ -10,22 +11,25 @@ class API::V1::LabsController < ApplicationController
   end
 
   def create
-    puts "params are #{params}"
-    puts "lab_params are #{lab_params}"
-
     lab = Lab.new(lab_params)
     first_user = lab.users.build({name: lab_params[:name], admin: true})
 
     if lab.save
-      # render json: { lab: lab, user: first_user, status: 200 }
       render json: {
-        status: 'SUCCESS',
+        status: 200,
         message: 'Lab created!',
-        data: { lab: lab, user: first_user, pin_codes: lab.invite_codes }
-        },
-        status: :ok
+        data: {
+          lab: lab,
+          user: first_user,
+          pin_codes: lab.invite_codes
+        }},
+        status: 200
     else
-      render json: { errors: lab.errors, status: 500 }
+      render json: {
+        errors: lab.errors,
+        status: 500
+      },
+      status: 500
     end
   end
 
@@ -48,7 +52,6 @@ class API::V1::LabsController < ApplicationController
   end
 
   def lab_params
-      # params.require(:data).require(:attributes).permit(:name, :institute)
       params.require(:lab).permit(:name, :institute)
     end
 end

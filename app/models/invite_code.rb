@@ -29,23 +29,11 @@ class InviteCode < ApplicationRecord
 
   validates :code, uniqueness: true, length: { maximum: 4 }
 
-  validate :limit_lab_pin_codes, on: :create
-
   protected
 
-  def limit_lab_pin_codes
-    puts 'limit_lab_pin_codes'
-    if self.lab.invite_codes.count > 5
-      puts "Too many invite codes"
-      self.errors.add(:base, "Please use your lab's existing Pin Codes first")
-    else
-      puts "Still under quota: generate_invite_code"
-    end
-  end
-
-  before_create :generate_invite_code
-  def generate_invite_code
-    puts 'generate_invite_code'
+  before_create :gen_unique_code
+  def gen_unique_code
+    puts 'gen_unique_code'
     self.code = loop do
       invite_code = rand(10 ** 4)
       break invite_code unless InviteCode.exists?(code: invite_code)

@@ -11,7 +11,9 @@ Rails.application.routes.draw do
        # Using 4 digit invite_codes => 9000 pending invites possible at any given time.
        # Expired invites are flushed every 24 hrs.
        # Should not be an issue, but can be improved later
-      resources :invite_codes, only: %i[index, create]
+      resources :invite_codes, only: [:index, :create]
+
+      resources :users, except: [:destroy]
 
       shallow do
         resources :labs do
@@ -19,7 +21,6 @@ Rails.application.routes.draw do
             resources :bookings
           end
 
-          resources :users, except: [:destroy]
         end
       end
     end
