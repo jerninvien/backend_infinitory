@@ -56,7 +56,7 @@ class User < ApplicationRecord
 
   protected
     # Assign an API key on create
-    before_create do |user|
+    before_create do
       self.api_key = generate_api_key
     end
 

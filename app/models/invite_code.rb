@@ -31,7 +31,7 @@ class InviteCode < ApplicationRecord
 
   protected
 
-  before_create do |invite_code|
+  before_create do
     puts 'gen_unique_code'
     self.code = loop do
       code = rand(10 ** 4)
