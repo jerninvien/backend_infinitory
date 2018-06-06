@@ -44,7 +44,7 @@ class Lab < ApplicationRecord
   def generate_lab_invite_codes
     puts 'generate_lab_invite_codes'
     5.times do
-      InviteCode.create!(
+      InviteCode.create(
         lab: self,
         user: self.users.first,
       )

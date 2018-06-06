@@ -4,6 +4,7 @@
 #
 #  id                 :bigint(8)        not null, primary key
 #  admin              :boolean          default(FALSE), not null
+#  api_key            :string
 #  name               :string           not null
 #  role               :string
 #  created_at         :datetime         not null
@@ -13,7 +14,8 @@
 #
 # Indexes
 #
-#  index_users_on_lab_id  (lab_id)
+#  index_users_on_api_key  (api_key) UNIQUE
+#  index_users_on_lab_id   (lab_id)
 #
 # Foreign Keys
 #

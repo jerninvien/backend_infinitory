@@ -26,6 +26,7 @@ class InviteCode < ApplicationRecord
   belongs_to :user, inverse_of: :invite_codes
 
   validates :lab, :user, presence: true
+
   validates :code, uniqueness: true, length: { maximum: 4 }
 
   validate :limit_lab_pin_codes, on: :create
@@ -35,7 +36,10 @@ class InviteCode < ApplicationRecord
   def limit_lab_pin_codes
     puts 'limit_lab_pin_codes'
     if self.lab.invite_codes.count > 5
+      puts "Too many invite codes"
       self.errors.add(:base, "Please use your lab's existing Pin Codes first")
+    else
+      puts "Still under quota: generate_invite_code"
     end
   end
 
