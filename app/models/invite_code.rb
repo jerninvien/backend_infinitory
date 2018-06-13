@@ -26,7 +26,6 @@ class InviteCode < ApplicationRecord
   belongs_to :user, inverse_of: :invite_codes
 
   validates :lab, :user, presence: true
-
   validates :code, uniqueness: true, length: { maximum: 4 }
 
   protected
@@ -35,7 +34,7 @@ class InviteCode < ApplicationRecord
     puts 'gen_unique_code'
     self.code = loop do
       code = rand(10 ** 4)
-      break code unless InviteCode.exists?(code: code)
+      break code unless InviteCode.exists?(code: code) || code.length != 4
     end
   end
 

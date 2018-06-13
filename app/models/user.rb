@@ -23,9 +23,15 @@
 #
 
 class User < ApplicationRecord
+  # ADD DEFAULT SCOPE TO ALWAYS INCLUDE DEVICES, INVITECODES, BOOKINGS?
+  # ADD CONCERN OR MODULE / MIXIN FOR SHARED METHOD TO CALCULATE USER DEVICE'S % BOOKING TIME?
+
   belongs_to :lab, inverse_of: :users
   has_many :invite_codes, inverse_of: :user, dependent: :destroy
-  has_many :bookings
+
+  has_many :bookings, index_errors: true, inverse_of: :user
+  accepts_nested_attributes_for :bookings
+
   has_many :devices, through: :bookings
 
   validates :name,
@@ -35,37 +41,49 @@ class User < ApplicationRecord
       message: "Your name should be between 2 and 40 characters long"
     }
 
+  # Assign an API key on create
+  # SHOULD THIS BE ENCRYPRED / DECRYPTED ON-THE-FLY?
+  before_create do
+    self.api_key = loop do
+      api_key = SecureRandom.base64.tr('+/=', 'Qrt')
+      break api_key unless User.exists?(api_key: api_key)
+    end
+  end
+
   def invited_by
-    if self.invited_by_user_id
-      User.find(self.invited_by_user_id)
+    ibui = self.invited_by_user_id
+    puts "running invited_by: #{ibui}"
+    if ibui && User.exists?(id: ibui)
+      User.find(ibui)
+    else
+      nil
     end
   end
 
   def generate_pin_code
+    # MOVE THIS CHECKING LOGIC TO invite_code.rb
+    # IT DOES NOT BELONG HERE
     if self.lab.invite_codes.count < 5
-      InviteCode.create!(
-        lab: self.lab,
-        user: self,
-      )
+      self.invite_codes.create!({ lab: self.lab })
+      # InviteCode.create!(
+      #   lab: self.lab,
+      #   user: self,
+      # )
     else
-      puts "Please use your lab's existing pin codes"
       self.errors.add(:error, "Use your lab's existing pin codes")
       return false
     end
   end
 
   protected
-    # Assign an API key on create
-    before_create do
-      self.api_key = generate_api_key
-    end
 
     # Generate a unique API key
-   def generate_api_key
-     loop do
-       api_key = SecureRandom.base64.tr('+/=', 'Qrt')
-       break api_key unless User.exists?(api_key: api_key)
-     end
-   end
+    # SHOULD THIS BE ENCRYPRED / DECRYPTED ON-THE-FLY?
+   # def generate_api_key
+   #   loop do
+   #     api_key = SecureRandom.base64.tr('+/=', 'Qrt')
+   #     break api_key unless User.exists?(api_key: api_key)
+   #   end
+   # end
 
 end

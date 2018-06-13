@@ -15,18 +15,18 @@ class API::V1::LabsController < ApplicationController
     first_user = lab.users.build({name: lab_params[:name], admin: true})
 
     if lab.save
+      puts "Saving new lab!"
       render json: {
-        status: 200,
-        message: 'Lab created!',
-        data: {
+          status: 200,
           lab: lab,
-          user: first_user,
-          pin_codes: lab.invite_codes
-        }},
+          pin_codes: lab.invite_codes,
+          users: lab.users,
+          devices: lab.devices
+        },
         status: 200
     else
       render json: {
-        errors: lab.errors,
+        error: lab.errors.messages,
         status: 500
       },
       status: 500
@@ -34,21 +34,31 @@ class API::V1::LabsController < ApplicationController
   end
 
   def show
-
+    render json: {
+        status: 200,
+        lab: lab,
+        pin_codes: lab.invite_codes,
+        users: lab.users,
+        devices: lab.devices
+      },
+      status: 200
   end
 
   def update
-
+    # THINK ABOUT LAB UPDATE PERMISSIONS
   end
 
   def destroy
-
+    # THINK ABOUT LAB DELETE PERMISSIONS
   end
 
   private
 
   def set_lab
-    lab = Lab.find(params[:id])
+    # lab = Lab.find(params[:id])
+    # ADD DEFAULT SCOPE WITH .includes([:user, devices, :invite_codes])
+    # ...HERE OR IN MODEL?
+    lab = @current_user.lab
   end
 
   def lab_params

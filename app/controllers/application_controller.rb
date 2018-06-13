@@ -4,14 +4,17 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
-
-
   private
     def render_unprocessable_entity_response(exception)
-      render json: exception.record.errors, status: :unprocessable_entity
+      puts "render_unprocessable_entity_response #{exception}"
+      render json: {
+        error: exception.record.errors
+        },
+        status: :unprocessable_entity
     end
 
     def render_not_found_response(exception)
+      puts "render_not_found_response #{exception}"
       render json: {
         error: exception.message
         },
@@ -21,20 +24,22 @@ class ApplicationController < ActionController::API
 
     def authenticate_user
       puts "authenticate_user"
+
+      # ENCRYPT / DECRYPTED ON-THE-FLY?
       api_key = request.headers['X-USER-TOKEN']
       if api_key
         @current_user = User.find_by({api_key: api_key})
         #Unauthorize if a user object is not returned
         if @current_user.nil?
-          return unauthorize
+          return unauthorized
         end
       else
-        return unauthorize
+        return unauthorized
       end
     end
 
-    def unauthorize
-      puts "unauthorize"
+    def unauthorized
+      puts "unauthorized user"
       render json: {
         api_key: nil,
         status: 403

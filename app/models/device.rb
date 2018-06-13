@@ -19,8 +19,14 @@
 #
 
 class Device < ApplicationRecord
+  # ADD DEFAULT SCOPE TO ALWAYS INCLUDE DEVICE'S, USERS AND BOOKINGS?
+  # ADD CONCERN OR MODULE / MIXIN FOR SHARED METHOD TO CALCULATE DEVICE'S % BOOKING TIME?
+
   belongs_to :lab
 
-  has_many :bookings
+  has_many :bookings, inverse_of: :device
   has_many :users, through: :bookings
+
+  # ADD CURRENTLY_ACTIVE? METHOD
+
 end

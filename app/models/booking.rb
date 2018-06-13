@@ -22,8 +22,11 @@
 #
 
 class Booking < ApplicationRecord
-  belongs_to :user
-  belongs_to :device
+  belongs_to :user, inverse_of: :bookings
+  belongs_to :device, inverse_of: :bookings
 
   validates :start_time, :end_time, presence: true
+
+  # ADD LAB_ID INDEX + UNIQUE
+  
 end
