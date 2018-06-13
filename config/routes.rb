@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       resources :users, except: [:destroy]
 
       shallow do
-        resources :labs do
+        resource :lab do
           resources :devices, except: [:destroy] do
             resources :bookings
           end

@@ -81,6 +81,6 @@ class API::V1::UsersController < ApplicationController
   end
 
   def user_params
-      params.require(:user).permit(:name, :pin_code)
+      params.require(:users).permit(:name, :pin_code)
     end
 end

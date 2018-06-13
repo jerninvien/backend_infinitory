@@ -11,6 +11,9 @@ class API::V1::LabsController < ApplicationController
   end
 
   def create
+    puts "params are #{params}"
+    puts "lab_params #{lab_params}"
+
     lab = Lab.new(lab_params)
     first_user = lab.users.build({name: lab_params[:name], admin: true})
 
@@ -26,7 +29,7 @@ class API::V1::LabsController < ApplicationController
         status: 200
     else
       render json: {
-        error: lab.errors.messages,
+        error: @lab.errors.messages,
         status: 500
       },
       status: 500
@@ -34,12 +37,13 @@ class API::V1::LabsController < ApplicationController
   end
 
   def show
+    puts "show lab #{@lab}"
     render json: {
         status: 200,
-        lab: lab,
-        pin_codes: lab.invite_codes,
-        users: lab.users,
-        devices: lab.devices
+        lab: @lab,
+        pin_codes: @lab.invite_codes,
+        users: @lab.users,
+        devices: @lab.devices
       },
       status: 200
   end
@@ -58,7 +62,7 @@ class API::V1::LabsController < ApplicationController
     # lab = Lab.find(params[:id])
     # ADD DEFAULT SCOPE WITH .includes([:user, devices, :invite_codes])
     # ...HERE OR IN MODEL?
-    lab = @current_user.lab
+    @lab = @current_user.lab
   end
 
   def lab_params

@@ -34,7 +34,7 @@ class InviteCode < ApplicationRecord
     puts 'gen_unique_code'
     self.code = loop do
       code = rand(10 ** 4)
-      break code unless InviteCode.exists?(code: code) || code.length != 4
+      break code unless InviteCode.exists?(code: code) || code.to_s.length != 4
     end
   end
 
