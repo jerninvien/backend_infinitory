@@ -2,15 +2,15 @@
 #
 # Table name: users
 #
-#  id                 :bigint(8)        not null, primary key
-#  admin              :boolean          default(FALSE), not null
-#  api_key            :string
-#  name               :string           not null
-#  role               :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  invited_by_user_id :integer
-#  lab_id             :bigint(8)
+#  id         :bigint(8)        not null, primary key
+#  admin      :boolean          default(FALSE), not null
+#  api_key    :string
+#  invited_by :string
+#  name       :string           not null
+#  role       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  lab_id     :bigint(8)
 #
 # Indexes
 #

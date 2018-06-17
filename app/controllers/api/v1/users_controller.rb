@@ -23,7 +23,7 @@ class API::V1::UsersController < ApplicationController
 
       user = lab.users.build({
         name: user_params[:name],
-        invited_by_user_id: invite_code.user_id
+        invited_by: User.find(invite_code.user_id).name if User.find(invite_code.user_id)
         })
 
       if user.save
