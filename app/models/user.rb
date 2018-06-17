@@ -37,8 +37,8 @@ class User < ApplicationRecord
   validates :name,
     presence: true,
     length: {
-      in: 2..40,
-      message: "Your name should be between 2 and 40 characters long"
+      in: 1..40,
+      message: "should be between 2 and 40 characters long"
     }
 
   # Assign an API key on create

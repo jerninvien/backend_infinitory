@@ -23,7 +23,7 @@ class API::V1::UsersController < ApplicationController
 
       user = lab.users.build({
         name: user_params[:name],
-        invited_by: User.find(invite_code.user_id).name if User.find(invite_code.user_id)
+        invited_by: User.find(invite_code.user_id).name || ""
         })
 
       if user.save
@@ -31,23 +31,20 @@ class API::V1::UsersController < ApplicationController
         invite_code.destroy
 
         render json: {
-            status: 200,
             currentUser: user,
             lab: lab
           },
           status: 200
       else
         render json: {
-          error: user.errors.messages,
-          status: 500
+          errors: user.errors,
         },
         status: 500
       end
     else
       puts "invalid pin code!"
       render json: {
-        status: 403,
-        error: 'Invalid pin code'
+        errors: 'Invalid pin code'
       },
       status: 403
     end
@@ -55,7 +52,6 @@ class API::V1::UsersController < ApplicationController
 
   def show
     render json: {
-      status: 200,
         bookings: user.bookings,
         devices: user.devices,
         invited_by: user.invited_by,

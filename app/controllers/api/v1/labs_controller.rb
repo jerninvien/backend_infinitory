@@ -23,14 +23,14 @@ class API::V1::LabsController < ApplicationController
           currentUser: lab.users.first,
           invite_codes: lab.invite_codes,
           lab: lab,
-          status: 200,
           users: lab.users,
         },
         status: 200
     else
+      puts "errors 1 #{lab.errors.full_messages}"
+      puts "errors 2 #{first_user.errors.full_messages}"
       render json: {
-        error: lab.errors.messages,
-        status: 500
+        errors: "Name should be between 2 and 40 characters long"
       },
       status: 500
     end
@@ -43,7 +43,6 @@ class API::V1::LabsController < ApplicationController
         devices: @lab.devices,
         invite_codes: @lab.invite_codes,
         lab: @lab,
-        status: 200,
         users: @lab.users,
       },
       status: 200

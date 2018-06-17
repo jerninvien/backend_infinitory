@@ -12,9 +12,9 @@
 class Lab < ApplicationRecord
   # ADD DEFAULT SCOPE TO ALWAYS INCLUDE LAB'S USERS, DEVICES, INVITECODES, BOOKINGS?
   # ADD CONCERN OR MODULE / MIXIN FOR SHARED METHOD TO CALCULATE LAB DEVICE'S '% BOOKING TIME'?
-  
+
   has_many :users, index_errors: true, inverse_of: :lab, dependent: :destroy
-  # accepts_nested_attributes_for :users
+  accepts_nested_attributes_for :users
 
   has_many :invite_codes, dependent: :destroy
   has_many :devices, dependent: :destroy
@@ -23,15 +23,15 @@ class Lab < ApplicationRecord
   validates :name,
     presence: true,
     length: {
-      in: 4..40,
-      message: "Lab names should be between 2 and 40 characters long"
+      in: 1..40,
+      message: "should be between 2 and 40 characters long"
     }
 
   validates :institute,
     allow_blank: true,
     length: {
-      in: 4..80,
-      message: "Institute name should be between 2 and 40 characters long"
+      in: 1..80,
+      message: "name should be between 2 and 80 characters long"
     }
 
 
