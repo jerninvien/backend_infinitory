@@ -9,7 +9,6 @@ class API::V1::InviteCodesController < ApplicationController
   def create
     if @current_user.generate_pin_code
       render json: {
-        status: 200,
         data: {
           invite_codes: @current_user.lab.invite_codes
         },

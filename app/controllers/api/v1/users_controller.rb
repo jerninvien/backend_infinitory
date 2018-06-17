@@ -32,7 +32,7 @@ class API::V1::UsersController < ApplicationController
 
         render json: {
             status: 200,
-            user: user,
+            currentUser: user,
             lab: lab
           },
           status: 200
@@ -56,12 +56,12 @@ class API::V1::UsersController < ApplicationController
   def show
     render json: {
       status: 200,
-      data: {
         bookings: user.bookings,
         devices: user.devices,
         invited_by: user.invited_by,
-        user: user
-      }},
+        user: user,
+        currentUser: @current_user
+      },
       status: 200
   end
 

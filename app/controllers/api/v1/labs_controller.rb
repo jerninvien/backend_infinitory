@@ -22,9 +22,10 @@ class API::V1::LabsController < ApplicationController
       render json: {
           status: 200,
           lab: lab,
-          pin_codes: lab.invite_codes,
-          users: lab.users,
-          devices: lab.devices
+          # pin_codes: lab.invite_codes,
+          # users: lab.users,
+          # devices: lab.devices,
+          currentUser: lab.users[0]
         },
         status: 200
     else
@@ -37,13 +38,14 @@ class API::V1::LabsController < ApplicationController
   end
 
   def show
-    puts "show lab #{@lab}"
+    puts "lab #{@lab}"
     render json: {
         status: 200,
         lab: @lab,
-        pin_codes: @lab.invite_codes,
-        users: @lab.users,
-        devices: @lab.devices
+        # pin_codes: @lab.invite_codes,
+        # users: @lab.users,
+        # devices: @lab.devices,
+        currentUser: @current_user,
       },
       status: 200
   end
@@ -62,7 +64,7 @@ class API::V1::LabsController < ApplicationController
     # lab = Lab.find(params[:id])
     # ADD DEFAULT SCOPE WITH .includes([:user, devices, :invite_codes])
     # ...HERE OR IN MODEL?
-    @lab = @current_user.lab
+    @lab = Lab.includes(:users).find(@current_user.lab_id)
   end
 
   def lab_params
