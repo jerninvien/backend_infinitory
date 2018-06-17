@@ -23,7 +23,7 @@ class ApplicationController < ActionController::API
 
 
     def authenticate_user
-      # sleep 1
+      sleep 2
       puts "\n\nauthenticate_user: #{request.headers}"
       puts "request.headers['X-USER-TOKEN']: #{request.headers['X-USER-TOKEN']}"
 

@@ -20,17 +20,16 @@ class API::V1::LabsController < ApplicationController
     if lab.save
       puts "Saving new lab!"
       render json: {
-          currentUser: @lab.users.first,
-          devices: @lab.devices,
-          invite_codes: @lab.invite_codes,
+          currentUser: lab.users.first,
+          invite_codes: lab.invite_codes,
           lab: lab,
           status: 200,
-          users: @lab.users,
+          users: lab.users,
         },
         status: 200
     else
       render json: {
-        error: @lab.errors.messages,
+        error: lab.errors.messages,
         status: 500
       },
       status: 500
