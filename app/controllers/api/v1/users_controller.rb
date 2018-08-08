@@ -53,10 +53,10 @@ class API::V1::UsersController < ApplicationController
   def show
     render json: {
         bookings: user.bookings,
+        currentUser: @current_user,
         devices: user.devices,
         invited_by: user.invited_by,
         user: user,
-        currentUser: @current_user
       },
       status: 200
   end

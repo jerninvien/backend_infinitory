@@ -39,6 +39,7 @@ end
 group :development do
   gem 'annotate'
   gem 'bullet'
+  gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'lol_dba' # https://medium.com/@rutvijpandya/monitor-and-optimize-database-queries-in-rails-c344dfe97e39
   gem 'spring-watcher-listen', '~> 2.0.0'
