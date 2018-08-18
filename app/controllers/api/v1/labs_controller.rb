@@ -14,16 +14,6 @@ class API::V1::LabsController < ApplicationController
     puts "params are #{params}"
     puts "lab_params #{lab_params}"
 
-    # lab = Lab.build({
-    #   name: lab_params[:name]
-    #   })
-
-
-    # first_user = lab.users.build({
-    #   name: lab_params[:name],
-    #   admin: true
-    #   })
-
     if Lab.create(name: lab_params[:name])
       puts "Saving new lab!"
       render json: {

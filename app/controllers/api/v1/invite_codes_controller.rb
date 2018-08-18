@@ -7,7 +7,7 @@ class API::V1::InviteCodesController < ApplicationController
   end
 
   def create
-    if @current_user.generate_invite_code
+    if InviteCode.generate_invite_code(@current_user)
       render json: {
         data: {
           invite_codes: @current_user.lab.invite_codes

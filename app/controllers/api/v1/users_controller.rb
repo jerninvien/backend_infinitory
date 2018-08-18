@@ -13,22 +13,20 @@ class API::V1::UsersController < ApplicationController
     puts "params are #{params}"
     puts "user_params are #{user_params}"
 
-    invite_code = InviteCode.find_by({
-      code: user_params[:invite_code]
-      })
+    invite_code = InviteCode.find_by(code: user_params[:invite_code])
 
-    if invite_code
+    if invite_code && invite_code.user && invite.user.lab
       puts "invite_code found: #{invite_code}"
 
-      current_user = lab.users.build({
-        invited_by: User.find(invite_code.user_id).name || ""
-        lab: invite_code.lab,
+      current_user = User.build({
+        invited_by: invite_code.user.name
+        lab: invite_code.user.lab,
         name: user_params[:name],
         })
 
       if user.save
-        puts "Saving new user and removing InviteCode"
-        invite_code.destroy
+        puts "Saving new user and reseting InviteCode"
+        invite_code.clear_info
 
         render json: {
             currentUser: current_user,
