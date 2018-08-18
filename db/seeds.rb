@@ -7,28 +7,25 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 require 'faker'
+# require 'activerecord-import'
 
-Device.destroy_all
+if Rails.env.development?
+  if InviteCode.count == 0
+    ic = []
+   (10000..99999).each do |i|
+     puts "Generating InviteCode: #{i}" if i % 10000 == 0
+     ic << InviteCode.new(code: i)
+   end
+   InviteCode.import(ic, validate: false)
+ end
 
-puts "Create fake devices for Labs, add some randomly to each use in Lab"
+  puts "Create seeds for Labs, Users, Devices"
 
-Lab.all.each do |lab|
-  puts "lab is #{lab.name}"
+  Lab.destroy_all
+  10.times do
+    lab = Lab.create(name: Faker::Name.name)
 
-  rand(4..12).times do |i|
-    # puts "i is #{i+1}"
-    device = Device.create(
-      lab_id: lab.id,
-      name: "PCR-#{i}"
-    )
-
-    device.save!
-
-    lab.users.each do |user|
-      if i % 3 === 0 then
-        puts "Assigning #{device.name}\n to #{user.name}"
-
-      end
-    end
+    
   end
+
 end

@@ -16,7 +16,7 @@ class Lab < ApplicationRecord
   has_many :users, index_errors: true, inverse_of: :lab, dependent: :destroy
   accepts_nested_attributes_for :users
 
-  has_many :invite_codes, dependent: :destroy
+  has_many :invite_codes, through: :users
   has_many :devices, dependent: :destroy
   has_many :bookings, through: :devices, dependent: :destroy
 
@@ -37,20 +37,23 @@ class Lab < ApplicationRecord
 
   protected
 
-  before_create :update_name
-  def update_name
+  before_create :create_first_user_and_invite_codes
+  def create_first_user_and_invite_codes
     puts 'create_first_user'
+    first_user = self.users.build({
+      name: self.name,
+      admin: true
+      })
+
     self.name = self.name + " Group"
   end
 
-  after_create :generate_first_pin_codes
-  def generate_first_pin_codes
-    puts 'generate_initial_invite_codes'
-    5.times do
-      InviteCode.create!(
-        lab: self,
-        user: self.users.first,
-      )
+  after_create :generate_initial_invite_codes
+  def generate_initial_invite_codes
+    InviteCode.where(user: nil).sample(5).each do |ic|
+      ic.user = self.users.first
+      ic.save!
     end
   end
+
 end

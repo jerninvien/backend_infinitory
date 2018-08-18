@@ -28,6 +28,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # https://github.com/Netflix/fast_jsonapi
 gem 'fast_jsonapi'
 
+# https://github.com/zdennis/activerecord-import/
+gem 'activerecord-import'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 

@@ -28,7 +28,7 @@ class User < ApplicationRecord
   # ADD CONCERN OR MODULE / MIXIN FOR SHARED METHOD TO CALCULATE USER DEVICE'S % BOOKING TIME?
 
   belongs_to :lab, inverse_of: :users
-  has_many :invite_codes, inverse_of: :user, dependent: :destroy
+  has_many :invite_codes, inverse_of: :user
 
   has_many :bookings, index_errors: true, inverse_of: :user
   accepts_nested_attributes_for :bookings
@@ -51,15 +51,20 @@ class User < ApplicationRecord
     end
   end
 
-  def generate_pin_code
+  def generate_invite_code
     # MOVE THIS CHECKING LOGIC TO invite_code.rb
     # IT DOES NOT BELONG HERE
     if self.lab.invite_codes.count < 5
-      self.invite_codes.create!({ lab: self.lab })
+      # self.invite_codes.create!({ lab: self.lab })
       # InviteCode.create!(
       #   lab: self.lab,
       #   user: self,
       # )
+
+      InviteCode.where(user: nil).all.sample.each do |ic|
+        ic.user = self
+      end
+
     else
       self.errors.add(:error, "Use your lab's existing pin codes")
       return false

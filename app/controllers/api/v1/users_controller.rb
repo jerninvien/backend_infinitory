@@ -14,16 +14,16 @@ class API::V1::UsersController < ApplicationController
     puts "user_params are #{user_params}"
 
     invite_code = InviteCode.find_by({
-      code: user_params[:pin_code]
+      code: user_params[:invite_code]
       })
 
     if invite_code
       puts "invite_code found: #{invite_code}"
-      lab = invite_code.lab
 
-      user = lab.users.build({
-        name: user_params[:name],
+      current_user = lab.users.build({
         invited_by: User.find(invite_code.user_id).name || ""
+        lab: invite_code.lab,
+        name: user_params[:name],
         })
 
       if user.save
@@ -31,13 +31,13 @@ class API::V1::UsersController < ApplicationController
         invite_code.destroy
 
         render json: {
-            currentUser: user,
+            currentUser: current_user,
             lab: lab
           },
           status: 200
       else
         render json: {
-          errors: user.errors,
+          errors: current_user.errors,
         },
         status: 500
       end
@@ -77,6 +77,6 @@ class API::V1::UsersController < ApplicationController
   end
 
   def user_params
-      params.require(:users).permit(:name, :pin_code)
+      params.require(:users).permit(:name, :invite_code)
     end
 end
