@@ -4,6 +4,7 @@ class API::V1::UsersController < ApplicationController
 
   def index
     render json: {
+      currentUser: @current_user,
       users: @current_user.lab.users,
       status: 200
     }
@@ -15,22 +16,22 @@ class API::V1::UsersController < ApplicationController
 
     invite_code = InviteCode.find_by(code: user_params[:invite_code])
 
-    if invite_code && invite_code.user && invite.user.lab
+    if invite_code && invite_code.user && invite_code.user.lab
       puts "invite_code found: #{invite_code}"
 
-      current_user = User.build({
-        invited_by: invite_code.user.name
+      current_user = User.new({
+        invited_by: invite_code.user.name,
         lab: invite_code.user.lab,
         name: user_params[:name],
         })
 
-      if user.save
+      if current_user.save
         puts "Saving new user and reseting InviteCode"
         invite_code.clear_info
 
         render json: {
             currentUser: current_user,
-            lab: lab
+            lab: current_user.lab
           },
           status: 200
       else

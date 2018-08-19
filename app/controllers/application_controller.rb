@@ -23,22 +23,23 @@ class ApplicationController < ActionController::API
 
 
     def authenticate_user
-      sleep 2
+      # sleep 2
       puts "\n\nauthenticate_user: #{request.headers}"
-      puts "request.headers['X-USER-TOKEN']: #{request.headers['X-USER-TOKEN']}"
+      puts "request.headers['authorization']: #{request.headers['authorization']}"
 
       # ENCRYPT / DECRYPTED ON-THE-FLY?
-      api_key = request.headers['X-USER-TOKEN']
+      api_key = request.headers['authorization']
 
       puts "api_key: #{api_key}"
-      if api_key
-        @current_user = User.find_by({api_key: api_key})
-        puts "current_user #{@current_user}"
 
+      @current_user = User.find_by({api_key: api_key})
+
+      if api_key && @current_user
+        puts "current_user #{@current_user}: authori"
         #Unauthorize if a user object is not returned
-        if @current_user.nil?
-          return unauthorized
-        end
+        # if @current_user.nil?
+        #   return unauthorized
+        # end
       else
         return unauthorized
       end

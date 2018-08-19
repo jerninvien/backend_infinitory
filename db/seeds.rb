@@ -12,8 +12,8 @@ require 'faker'
 if Rails.env.development?
   if InviteCode.count == 0
     ic = []
-   (10000..99999).each do |i|
-     puts "Generating InviteCode: #{i}" if i % 10000 == 0
+   (1000..9999).each do |i|
+     puts "Generating InviteCode: #{i}" if i % 1000 == 0
      ic << InviteCode.new(code: i)
    end
    InviteCode.import(ic, validate: false)
@@ -25,7 +25,7 @@ if Rails.env.development?
   10.times do
     lab = Lab.create(name: Faker::Name.name)
 
-    
+
   end
 
 end

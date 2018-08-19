@@ -20,24 +20,23 @@
 
 class InviteCode < ApplicationRecord
   belongs_to :user, inverse_of: :invite_codes, optional: true
-
   # validates :lab, :user, presence: true
-  validates :code, uniqueness: true, length: { is: 5 }
+  validates :code, uniqueness: true, length: { is: 4 }
 
+
+  def clear_info
+    puts "clear_info invite_code"
+    self.user = nil
+    save!
+  end
 
   protected
-    def clear_info
-      self.user = nil
-    end
-
     def generate_invite_code(user)
       if user.lab.invite_codes.count < 5
-
         InviteCode.where(user: nil).sample do |ic|
           ic.user = user
           ic.save!
         end
-
       else
         user.errors.add(:error, "Use your lab's existing pin codes")
         return false

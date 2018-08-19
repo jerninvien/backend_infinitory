@@ -14,18 +14,19 @@ class API::V1::LabsController < ApplicationController
     puts "params are #{params}"
     puts "lab_params #{lab_params}"
 
-    if Lab.create(name: lab_params[:name])
+    lab = Lab.create(name: lab_params[:name])
+
+    if lab
       puts "Saving new lab!"
       render json: {
           currentUser: lab.users.first,
           invite_codes: lab.invite_codes,
           lab: lab,
-          users: lab.users,
         },
         status: 200
     else
       puts "errors 1 #{lab.errors.full_messages}"
-      puts "errors 2 #{first_user.errors.full_messages}"
+      # puts "errors 2 #{first_user.errors.full_messages}"
       render json: {
         errors: "Name should be between 2 and 40 characters long"
       },
@@ -34,7 +35,7 @@ class API::V1::LabsController < ApplicationController
   end
 
   def show
-    puts "lab #{@lab}"
+    puts "Show lab #{@lab}"
     render json: {
         currentUser: @current_user,
         devices: @lab.devices,
