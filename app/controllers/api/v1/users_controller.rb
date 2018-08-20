@@ -4,7 +4,6 @@ class API::V1::UsersController < ApplicationController
 
   def index
     render json: {
-      currentUser: @current_user,
       users: @current_user.lab.users,
       status: 200
     }
@@ -30,8 +29,7 @@ class API::V1::UsersController < ApplicationController
         invite_code.clear_info
 
         render json: {
-            currentUser: current_user,
-            lab: current_user.lab
+            currentUser: current_user
           },
           status: 200
       else
