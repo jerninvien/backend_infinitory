@@ -40,7 +40,9 @@ class API::V1::LabsController < ApplicationController
         devices: @lab.devices,
         invite_codes: @lab.invite_codes,
         lab: @lab,
-        users: @lab.users,
+        users: @lab.users.as_json(
+          only: [:id, :admin, :name, :invited_by, :role, :updated_at]
+        ),
       },
       status: 200
   end
@@ -56,11 +58,10 @@ class API::V1::LabsController < ApplicationController
   private
 
   def set_lab
-    # lab = Lab.find(params[:id])
-    # ADD DEFAULT SCOPE WITH .includes([:user, devices, :invite_codes])
+    # ADD DEFAULT SCOPE WITH .includes([:user, :devices, :invite_codes])
     # ...HERE OR IN MODEL?
-    @lab = Lab.includes(:devices, :invite_codes, :users).find(@current_user.lab_id)
-    # @lab = Lab.find(@current_user.lab_id)
+    @lab = Lab.includes(:devices, :invite_codes, users: [:devices, :invite_codes])
+              .find(@current_user.lab_id)
   end
 
   def lab_params
