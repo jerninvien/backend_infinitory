@@ -1,18 +1,13 @@
 class API::V1::InviteCodesController < ApplicationController
 
   def index
-    render json: {
-      invite_codes: @current_user.invite_codes
-    }
+    render json: { invite_codes: @current_user.invite_codes }
   end
 
   def create
-    if InviteCode.generate_invite_code(@current_user)
+    if InviteCode.claim_invite_code(@current_user)
       render json: {
-        data: {
-          invite_codes: @current_user.lab.invite_codes
-        },
-        status: 200
+        invite_codes: @current_user.lab.invite_codes
       },
       status: 200
     else

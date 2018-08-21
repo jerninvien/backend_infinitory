@@ -7,18 +7,12 @@ class ApplicationController < ActionController::API
   private
     def render_unprocessable_entity_response(exception)
       puts "render_unprocessable_entity_response #{exception}"
-      render json: {
-        error: exception.record.errors
-        },
-        status: :unprocessable_entity
+      render json: { error: exception.record.errors }, status: :unprocessable_entity
     end
 
     def render_not_found_response(exception)
       puts "render_not_found_response #{exception}"
-      render json: {
-        error: exception.message
-        },
-        status: :not_found
+      render json: { error: exception.message }, status: :not_found
     end
 
 
@@ -31,7 +25,6 @@ class ApplicationController < ActionController::API
       api_key = request.headers['authorization']
 
       puts "api_key: #{api_key}"
-
       @current_user = User.find_by({api_key: api_key})
 
       if api_key && @current_user
@@ -47,11 +40,7 @@ class ApplicationController < ActionController::API
 
     def unauthorized
       puts "unauthorized user"
-      render json: {
-        api_key: nil,
-        status: 403
-      },
-        status: 403
+      render json: { api_key: nil, status: 403 }, status: 403
       return false
     end
 end

@@ -3,16 +3,11 @@ class API::V1::UsersController < ApplicationController
   skip_before_action :authenticate_user, only: :create
 
   def index
-    render json: {
-      users: @current_user.lab.users,
-      status: 200
-    }
+    render json: { users: @current_user.lab.users }, status: 200
   end
 
   def create
-    puts "params are #{params}"
     puts "user_params are #{user_params}"
-
     invite_code = InviteCode.find_by(code: user_params[:invite_code])
 
     if invite_code && invite_code.user && invite_code.user.lab
@@ -25,25 +20,22 @@ class API::V1::UsersController < ApplicationController
         })
 
       if current_user.save
-        puts "Saving new user and reseting InviteCode"
-        invite_code.clear_info
+        invite_code.reset_info
 
         render json: {
-            currentUser: current_user
-          },
-          status: 200
+          currentUser: current_user,
+          devices: current_user.lab.devices,
+          invite_codes: current_user.lab.invite_codes,
+          lab: current_user.lab,
+          users: current_user.lab.users.as_json(
+            only: [:id, :admin, :name, :invited_by, :role, :updated_at]
+          ),
+          }, status: 200
       else
-        render json: {
-          errors: current_user.errors,
-        },
-        status: 500
+        render json: { errors: current_user.errors }, status: 500
       end
     else
-      puts "invalid pin code!"
-      render json: {
-        errors: 'Invalid pin code'
-      },
-      status: 403
+      render json: { errors: 'Invalid pin code' }, status: 403
     end
   end
 
@@ -59,18 +51,15 @@ class API::V1::UsersController < ApplicationController
   end
 
   def update
-
   end
 
   def destroy
-
   end
 
   private
 
   def set_user
     user = User.find(params[:id]) || @current_user
-    # user = User.find(params[:id]) if params[:id] else @current_user
   end
 
   def user_params

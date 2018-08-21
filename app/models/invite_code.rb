@@ -24,23 +24,22 @@ class InviteCode < ApplicationRecord
   validates :code, uniqueness: true, length: { is: 4 }
 
 
-  def clear_info
-    puts "clear_info invite_code"
+  def reset_info
+    puts 'InviteCode reset_info'
     self.user = nil
     save!
   end
 
   protected
-    def generate_invite_code(user)
+    def self.claim_invite_code(user)
       if user.lab.invite_codes.count < 5
         InviteCode.where(user: nil).sample do |ic|
           ic.user = user
           ic.save!
         end
       else
-        user.errors.add(:error, "Use your lab's existing pin codes")
+        user.errors.add(:error, "Use your lab's pre-existing invite codes")
         return false
       end
     end
-
 end

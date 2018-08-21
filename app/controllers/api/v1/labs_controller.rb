@@ -4,10 +4,7 @@ class API::V1::LabsController < ApplicationController
 
   def index
     labs = Lab.all
-    render json: {
-      labs: labs,
-      status: 200
-    }
+    render json: { labs: labs }, status: 200
   end
 
   def create
@@ -25,12 +22,8 @@ class API::V1::LabsController < ApplicationController
         },
         status: 200
     else
-      puts "errors 1 #{lab.errors.full_messages}"
-      # puts "errors 2 #{first_user.errors.full_messages}"
-      render json: {
-        errors: "Name should be between 2 and 40 characters long"
-      },
-      status: 500
+      # puts "errors 1 #{lab.errors.full_messages}"
+      render json: { errors: lab.errors.full_messages }, status: 500
     end
   end
 
@@ -48,11 +41,9 @@ class API::V1::LabsController < ApplicationController
   end
 
   def update
-    # THINK ABOUT LAB UPDATE PERMISSIONS
   end
 
   def destroy
-    # THINK ABOUT LAB DELETE PERMISSIONS
   end
 
   private

@@ -50,36 +50,4 @@ class User < ApplicationRecord
       break api_key unless User.exists?(api_key: api_key)
     end
   end
-
-  # def generate_invite_code
-  #   # MOVE THIS CHECKING LOGIC TO invite_code.rb
-  #   # IT DOES NOT BELONG HERE
-  #   if self.lab.invite_codes.count < 5
-  #     # self.invite_codes.create!({ lab: self.lab })
-  #     # InviteCode.create!(
-  #     #   lab: self.lab,
-  #     #   user: self,
-  #     # )
-  #
-  #     InviteCode.where(user: nil).all.sample.each do |ic|
-  #       ic.user = self
-  #     end
-  #
-  #   else
-  #     self.errors.add(:error, "Use your lab's existing pin codes")
-  #     return false
-  #   end
-  # end
-
-  protected
-
-    # Generate a unique API key
-    # SHOULD THIS BE ENCRYPRED / DECRYPTED ON-THE-FLY?
-   # def generate_api_key
-   #   loop do
-   #     api_key = SecureRandom.base64.tr('+/=', 'Qrt')
-   #     break api_key unless User.exists?(api_key: api_key)
-   #   end
-   # end
-
 end
