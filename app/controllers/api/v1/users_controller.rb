@@ -22,12 +22,16 @@ class API::V1::UsersController < ApplicationController
       if current_user.save
         invite_code.reset_info
 
+        # lab = current_user.lab
+        lab = Lab.includes(:devices, :invite_codes, users: [:devices, :invite_codes])
+                 .find(current_user.lab_id)
+
         render json: {
           currentUser: current_user,
-          devices: current_user.lab.devices,
-          invite_codes: current_user.lab.invite_codes,
-          lab: current_user.lab,
-          users: current_user.lab.users.as_json(
+          devices: lab.devices,
+          invite_codes: lab.invite_codes,
+          lab: lab,
+          users: lab.users.as_json(
             only: [:id, :admin, :name, :invited_by, :role, :updated_at]
           ),
           }, status: 200

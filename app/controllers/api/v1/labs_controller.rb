@@ -28,7 +28,7 @@ class API::V1::LabsController < ApplicationController
   end
 
   def show
-    puts "Show lab #{@lab}"
+    puts "Show lab #{@lab.to_json}"
     render json: {
         devices: @lab.devices,
         invite_codes: @lab.invite_codes,
